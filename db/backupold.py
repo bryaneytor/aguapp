@@ -6,7 +6,10 @@ class DBManage():
     def insertPlanta(nombre,rnc,ubicacion,dueno):
         with sqlite3.connect("database.db") as conn:
             c = conn.cursor()
-            c.execute("INSERT INTO planta(nombre,RNC,ubicacion, dueno) VALUES (?, ?, ?, ?)", (nombre,rnc,ubicacion,dueno))
+            c.execute(
+                "INSERT INTO planta(nombre,RNC,ubicacion, dueno) VALUES (?, ?, ?, ?)", 
+                (nombre,rnc,ubicacion,dueno)
+            )
             conn.commit()
             return
         return

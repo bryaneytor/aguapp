@@ -27,11 +27,20 @@ class usuario(db.Model):
     idusuario = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100),nullable=False)
     password = db.Column(db.String(255),nullable=False)
-    status = db.Column(db.String(1), nullable=False)
+    status = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     rol = db.Column(db.String(50), nullable=False, default="Cliente")
 
-# Define the Role data-model
+class pedidoCliente(db.Model):
+    __tablename__ = 'pedidoCliente'
+    idpedido = db.Column(db.Integer, primary_key=True)
+    id_cliente = db.Column(db.Integer(), db.ForeignKey('usuarios.idusuario', ondelete='CASCADE'))
+    cantidad = db.Column(db.Integer, nullable=False)
+    ubicacion = db.Column(db.String(255), nullable=False)
+    water_brand = db.Column(db.String(255), nullable=False)
+
+
+
 #class Role(db.Model):
 # Roles : Admin, Planta, Colmado, Cliente
 #    __tablename__ = 'roles'

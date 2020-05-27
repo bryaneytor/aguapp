@@ -1,18 +1,38 @@
 import sqlite3
 import json
 from hashlib import md5
-from .dbmanager import db, pedidos, plantas, usuario
+from .dbmanager import db, pedidos, plantas, usuario, pedidoCliente
 
 class DBManager():
 
     def insertPlanta(nombre,rnc,ubicacion,dueno):
-        planta = plantas(nombre=nombre, rnc=rnc, ubicacion=ubicacion, owner=dueno)
+        planta = plantas(
+            nombre=nombre, 
+            rnc=rnc, 
+            ubicacion=ubicacion, 
+            owner=dueno
+        )
         db.session.add(planta)
         db.session.commit()
         return
     
     def insertPedido(client, qty, location):
-        pedido = pedidos(cliente=client, cantidad=qty, ubicacion=location)
+        pedido = pedidos(
+            cliente=client, 
+            cantidad=qty, 
+            ubicacion=location
+        )
+        db.session.add(pedido)
+        db.session.commit()
+        return
+
+    def insertPedidoCliente(idclient, qty, location,botellon):
+        pedido = pedidoCliente(
+            id_cliente=idclient, 
+            cantidad=qty, 
+            ubicacion=location,
+            water_brand=botellon
+        )
         db.session.add(pedido)
         db.session.commit()
         return
@@ -23,17 +43,34 @@ class DBManager():
         #m.update(passw)
         #contra = m.digest()
         #print(contra)
-        user = usuario(username=user, password=passwrd, rol=rol, status=status)
+        user = usuario(
+            username=user, 
+            password=passwrd, 
+            rol=rol, 
+            status=status
+        )
         db.session.add(user)
         db.session.commit()
-        return
+        return ""
     
     def verpedido(_id):
         with sqlite3.connect("db/database2.db") as conn:
             c = conn.cursor()
-            c.execute("SELECT ubicacion, cliente, cantidad FROM pedidos WHERE idpedido = (?) ", (str(_id),))
+            c.execute(
+                "SELECT ubicacion, cliente, cantidad FROM pedidos WHERE idpedido = (?) ", 
+                (str(_id),)
+            )
             resultado = c.fetchone()
             print (resultado)
+            return json.dumps(resultado)
+        return
+    def verClientePedido(cliente):
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute(
+                "SELECT * FROM pedidoCliente where id_cliente = (?) ", (cliente,)
+            )
+            resultado = c.fetchall()
             return json.dumps(resultado)
         return
     
@@ -41,6 +78,13 @@ class DBManager():
         with sqlite3.connect("db/database2.db") as conn:
             c = conn.cursor()
             c.execute("SELECT * FROM pedidos")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
+        return
+    def verpedidosclientes():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM pedidoCliente")
             resultado = c.fetchall()
             return json.dumps(resultado)
         return
