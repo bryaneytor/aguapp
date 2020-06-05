@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import json
 from flask_cors import CORS
 from flask import request
 from db.backupold import DBManage
@@ -81,13 +81,38 @@ def signup():
             data['rol'], 
             int(data['status'])
             )
-        return ""
+        return
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == "GET":
+    if request.method == "POST":
         data = request.get_json()
-          
+        print(data)
+        access = DBManager.login(
+            data['username'],
+            data['password']
+        )
+
+        if access == True:
+            return "true"
+        else:
+            return "false"
+        
+        # if data:
+        #     return "Login Succesfull"
+        #     # json.dumps({
+        #     #     "err_code": 200,
+        #     #     "err_mesg": "Login Succesfull",
+        #     #     "data": json.dumps(data)
+        #     # })
+
+        # else:
+        #     return json.dumps({
+        #         "err_code": 400,
+        #         "err_mesg": "Wrong username or password",
+        #         "data": None
+        #     })
+
 if __name__ == "__main__":  
     app.run(
         host='0.0.0.0', 

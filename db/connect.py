@@ -102,7 +102,30 @@ class DBManager():
             c.execute("SELECT * FROM usuarios")
             resultado = c.fetchall()
             return json.dumps(resultado)
-    
+
+    def login(user,contra):
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT username,password FROM usuarios where username = (?) and password = (?)", (user,contra))
+            resultado = c.fetchall()
+            print (json.dumps(resultado))
+        
+        if not resultado:
+            return False
+            #json.dumps({
+            #     "err_code": 400,
+            #     "err_mesg": "Wrong username or password",
+            #     "data": None
+            # })
+
+        else:
+            return True
+            # json.dumps({
+            #     "err_code": 200,
+            #     "err_mesg": "Login Succesfull",
+            #     "data": json.dumps(resultado)
+            # })
+
     #c.execute("SELECT * FROM pedidos")
     #rows = c.fetchall()
 
