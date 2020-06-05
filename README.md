@@ -1,2 +1,2 @@
 # aguapp
-App para Vender botellones de agua a domicilio
+API para Vender botellones de agua a domicilio
