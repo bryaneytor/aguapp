@@ -1,59 +1,143 @@
-import datetime
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+import sqlite3
+import json
+from hashlib import md5, sha224
+from .models import db, Pedidos, Plantas, Users, Colmados, Anuncios
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/bryan/bryan/aguapp/db/database2.db'
-db = SQLAlchemy(app)
+class DBManager():
 
-class pedidos(db.Model):
-    __tablename__ = 'pedidos'
-    idpedido = db.Column(db.Integer, primary_key=True)
-    cliente = db.Column(db.String(50))
-    cantidad = db.Column(db.Integer, nullable=False)
-    ubicacion = db.Column(db.String(255), nullable=False)
+    def insertAd(user,title,info,price):
+        anuncios = Anuncios(
+            idusuario = user,
+            titulo = title,
+            info = info,
+            precio = price
+        )
+        db.session.add(anuncios)
+        db.session.commit()
+        return
 
-class plantas(db.Model):
-    __tablename__ = 'plantas'
-    idplanta = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(255), nullable=False)
-    rnc = db.Column(db.String(9),nullable=False)
-    ubicacion = db.Column(db.String(255), nullable=False)
-    owner = db.Column(db.String(50))
+    def insertPlanta(user,nombre,rnc,ubicacion,dueno):
+        planta = Plantas(
+            idusuario=user,
+            nombre=nombre, 
+            rnc=rnc, 
+            ubicacion=ubicacion, 
+            owner=dueno
+        )
+        db.session.add(planta)
+        db.session.commit()
+        return
+    
+    def insertColmado(user,nombre,rnc,ubicacion,dueno):
+        colm = Colmados(
+            idusuario=user,
+            nombre=nombre, 
+            rnc=rnc, 
+            ubicacion=ubicacion, 
+            owner=dueno
+        )
+        db.session.add(colm)
+        db.session.commit()
+        return
 
-# Define the User data-model
-class usuario(db.Model):
-    __tablename__ = 'usuarios'
-    idusuario = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100),nullable=False)
-    password = db.Column(db.String(255),nullable=False)
-    status = db.Column(db.Boolean, nullable=False)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    rol = db.Column(db.String(50), nullable=False, default="Cliente")
+    def insertPedido(client, qty, location,marca):
+        pedido = Pedidos(
+            idusuario=client, 
+            cantidad=qty, 
+            ubicacion=location,
+            water_brand=marca
+        )
+        db.session.add(pedido)
+        db.session.commit()
+        return
 
-class pedidoCliente(db.Model):
-    __tablename__ = 'pedidoCliente'
-    idpedido = db.Column(db.Integer, primary_key=True)
-    id_cliente = db.Column(db.Integer(), db.ForeignKey('usuarios.idusuario', ondelete='CASCADE'))
-    cantidad = db.Column(db.Integer, nullable=False)
-    ubicacion = db.Column(db.String(255), nullable=False)
-    water_brand = db.Column(db.String(255), nullable=False)
+    def insertUser(user, passwrd, status,admn,colm,clnt):
+        user = Users(
+            username=user, 
+            password=passwrd,
+            status=status,
+            admin=admn,
+            colmado=colm,
+            cliente=clnt
+        )
+        db.session.add(user)
+        db.session.commit()
+        return 
 
+###############################################################
+#                       GET methods
+###############################################################
+    def verpedido(_id):
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute(
+                "SELECT * FROM pedidos WHERE idusuario = (?) ", 
+                (str(_id),)
+            )
+            resultado = c.fetchall()
+            print (resultado)
+            return json.dumps(resultado)
+        return
 
+    def verPedidosClientes():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute(
+                "SELECT * FROM pedidos where cliente = '1' ",
+            )
+            resultado = c.fetchall()
+            return json.dumps(resultado)
+        return
+    
+    def verpedidos():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM pedidos")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
+        return
 
-#class Role(db.Model):
-# Roles : Admin, Planta, Colmado, Cliente
-#    __tablename__ = 'roles'
-#    idrol = db.Column(db.Integer(), primary_key=True)
-#    rol = db.Column(db.String(50), unique=True)
+    def verplantas():
+      with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM plantas")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
 
-# Define the UserRoles association table
-#class UserRoles(db.Model):
-#    __tablename__ = 'user_roles'
-#    _id = db.Column(db.Integer(), primary_key=True)
-#    user_id = db.Column(db.Integer(), db.ForeignKey('usuario.idusuario', ondelete='CASCADE'))
-#    role_id = db.Column(db.Integer(), db.ForeignKey('roles.idrol', ondelete='CASCADE'))
+    def vercolmados():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM colmados")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
 
-db.create_all()
-db.session.commit()
-db.session.close()
+    def verAds():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM anuncios")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
+
+####################################################################
+#               Global USERS endpoints functions
+####################################################################
+
+    def veruser():
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM usuarios")
+            resultado = c.fetchall()
+            return json.dumps(resultado)
+
+    def login(user,contra):
+        with sqlite3.connect("db/database2.db") as conn:
+            c = conn.cursor()
+            c.execute("SELECT username,password FROM usuarios where username = (?) and password = (?)", (user,contra))
+            resultado = c.fetchall()
+            print (json.dumps(resultado))
+        
+        if not resultado:
+            return False
+        else:
+            return True
+       
