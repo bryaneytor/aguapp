@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="./database2.db" schema="database2" type="SQLite - 3.30.1">
+   <tables>
+      <table name="anuncios" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="10" id="0" name="idanuncio" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="1" name="idusuario" nullable="true" remarks="" size="2000000000" type="INTEGER" typeCode="4">
+            <parent column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="usuarios"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="2" name="titulo" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="3" name="info" nullable="false" remarks="" size="2000000000" type="TEXT" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="4" name="precio" nullable="false" remarks="" size="2000000000" type="FLOAT" typeCode="6"/>
+         <primaryKey column="idanuncio" sequenceNumberInPK="1"/>
+         <index name="anuncios_s_pk" unique="true">
+            <column ascending="true" name="idanuncio"/>
+         </index>
+      </table>
+      <table name="colmados" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="10" id="0" name="idplanta" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="1" name="idusuario" nullable="true" remarks="" size="2000000000" type="INTEGER" typeCode="4">
+            <parent column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="usuarios"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="2" name="nombre" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="3" name="rnc" nullable="false" remarks="" size="2000000000" type="VARCHAR(9)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="4" name="ubicacion" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="5" name="owner" nullable="true" remarks="" size="2000000000" type="VARCHAR(50)" typeCode="12"/>
+         <primaryKey column="idplanta" sequenceNumberInPK="1"/>
+         <index name="colmados_s_pk" unique="true">
+            <column ascending="true" name="idplanta"/>
+         </index>
+      </table>
+      <table name="pedidos" numRows="3" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="10" id="0" name="idpedido" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="1" name="idusuario" nullable="true" remarks="" size="2000000000" type="INTEGER" typeCode="4">
+            <parent column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="usuarios"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="2" name="cantidad" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="3" name="ubicacion" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="4" name="water_brand" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <primaryKey column="idpedido" sequenceNumberInPK="1"/>
+         <index name="pedidos_s_pk" unique="true">
+            <column ascending="true" name="idpedido"/>
+         </index>
+      </table>
+      <table name="plantas" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="10" id="0" name="idplanta" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="1" name="idusuario" nullable="true" remarks="" size="2000000000" type="INTEGER" typeCode="4">
+            <parent column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="usuarios"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="2" name="nombre" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="3" name="rnc" nullable="false" remarks="" size="2000000000" type="VARCHAR(9)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="4" name="ubicacion" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="5" name="owner" nullable="true" remarks="" size="2000000000" type="VARCHAR(50)" typeCode="12"/>
+         <primaryKey column="idplanta" sequenceNumberInPK="1"/>
+         <index name="plantas_s_pk" unique="true">
+            <column ascending="true" name="idplanta"/>
+         </index>
+         <index name="sqlite_autoindex_plantas_1" unique="true">
+            <column ascending="true" name="nombre"/>
+            <column ascending="true" name="rnc"/>
+         </index>
+      </table>
+      <table name="usuarios" numRows="9" remarks="" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="10" id="0" name="idusuario" nullable="false" remarks="" size="2000000000" type="INTEGER" typeCode="4">
+            <child column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="anuncios"/>
+            <child column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="colmados"/>
+            <child column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="pedidos"/>
+            <child column="idusuario" foreignKey="" implied="false" onDeleteCascade="true" table="plantas"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="1" name="username" nullable="false" remarks="" size="2000000000" type="VARCHAR(100)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="2" name="password" nullable="false" remarks="" size="2000000000" type="VARCHAR(255)" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="3" name="status" nullable="false" remarks="" size="2000000000" type="BOOLEAN" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="4" name="created" nullable="true" remarks="" size="2000000000" type="DATETIME" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="5" name="admin" nullable="true" remarks="" size="2000000000" type="BOOLEAN" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="6" name="colmado" nullable="true" remarks="" size="2000000000" type="BOOLEAN" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="10" id="7" name="cliente" nullable="true" remarks="" size="2000000000" type="BOOLEAN" typeCode="4"/>
+         <primaryKey column="idusuario" sequenceNumberInPK="1"/>
+         <index name="usuarios_s_pk" unique="true">
+            <column ascending="true" name="idusuario"/>
+         </index>
+         <index name="sqlite_autoindex_usuarios_1" unique="true">
+            <column ascending="true" name="username"/>
+         </index>
+      </table>
+   </tables>
+</database>
