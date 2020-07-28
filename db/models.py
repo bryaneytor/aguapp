@@ -3,7 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/bryan/bryan/proyectos/aguapp/db/database2.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///usr/local/aguapp/db/database2.db'
 db = SQLAlchemy(app)
 
 
@@ -16,9 +16,9 @@ class Plantas(db.Model):
 
     idplanta = db.Column(db.Integer, primary_key=True)
     idusuario = db.Column(
-        db.Integer(), 
+        db.Integer(),
         db.ForeignKey(
-            'usuarios.idusuario', 
+            'usuarios.idusuario',
             ondelete='CASCADE'
         )
     )
@@ -33,9 +33,9 @@ class Colmados(db.Model):
 
     idplanta = db.Column(db.Integer, primary_key=True)
     idusuario = db.Column(
-        db.Integer(), 
+        db.Integer(),
         db.ForeignKey(
-            'usuarios.idusuario', 
+            'usuarios.idusuario',
             ondelete='CASCADE'
         )
     )
@@ -67,9 +67,9 @@ class Pedidos(db.Model):
 
     idpedido = db.Column(db.Integer, primary_key=True)
     idusuario = db.Column(
-        db.Integer(), 
+        db.Integer(),
         db.ForeignKey(
-            'usuarios.idusuario', 
+            'usuarios.idusuario',
             ondelete='CASCADE'
         )
     )
