@@ -62,8 +62,12 @@ def ad():
             data['info'],
             data['precio']
         )
+        return "true"
 
-    return "true"
+@app.route('/publicar/pedido/anuncio')
+def choseAd():
+
+    return
 
 
 #GET Endpoints
@@ -113,14 +117,14 @@ def signup():
 
             if not resultado:
                 DBManager.insertUser(
-                    data['username'], 
-                    data['password'], 
+                    data['username'],
+                    data['password'],
                     int(data['status']),
                     int(data['admin']),
                     int(data['colmado']),
                     int(data['cliente'])
                 )
-                return "true" 
+                return "true"
             else:
                 return "false"
 
@@ -133,12 +137,12 @@ def login():
             data['username'],
             data['password']
         )
-        
+
         if access == True:
             with sqlite3.connect("db/database2.db") as conn:
                 c = conn.cursor()
                 c.execute(
-                    "SELECT idusuario,admin,colmado,cliente FROM usuarios where username = (?)", 
+                    "SELECT idusuario,admin,colmado,cliente FROM usuarios where username = (?)",
                     (data['username'],)
                 )
                 user_data = c.fetchone()
@@ -162,13 +166,12 @@ def login():
         else:
             return "0"
 
-
-if __name__ == "__main__":  
-    app.run(
-        host='0.0.0.0', 
-        debug=True, 
+if __name__ == "__main__":
+      app.run(
+        host='0.0.0.0',
+        debug=True,
         ssl_context=(
-            'certificate/cert.pem', 
+            'certificate/cert.pem',
             'certificate/key.pem'
         )
-    )
+      )
