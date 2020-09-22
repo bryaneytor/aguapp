@@ -65,7 +65,7 @@ def ad():
             data['info'],
             data['precio']
         )
-    return "true"
+        return "true"
 
 @app.route('/publicar/pedido/anuncio')
 def choseAd():
@@ -168,7 +168,6 @@ def login():
                 })
         else:
             return "0"
-
 
 if __name__ == "__main__":
       app.run(
