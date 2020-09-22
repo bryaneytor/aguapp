@@ -9,6 +9,9 @@ from db.dbmanager import DBManager
 CORS(app)
 
 #POST Endpoints
+@app.route('/')
+def home():
+   return "Welcome to the aguapp api v1"
 
 @app.route('/agregar/planta', methods=['POST'])
 def agregar_planta():
@@ -62,7 +65,6 @@ def ad():
             data['info'],
             data['precio']
         )
-
     return "true"
 
 @app.route('/publicar/pedido/anuncio')
